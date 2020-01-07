@@ -1,0 +1,51 @@
+{
+  "name": "nmr-mixture-generator",
+  "version": "0.0.0",
+  "description": "Repository to generate a synthetic data-set of complex mixtures",
+  "main": "src/index.js",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "eslint": "eslint src",
+    "eslint-fix": "npm run eslint -- --fix",
+    "test": "npm run test-coverage && npm run eslint",
+    "test-coverage": "jest --coverage",
+    "test-only": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cheminfo-js/nmr-mixture-generator.git"
+  },
+  "keywords": [],
+  "author": "andcastillo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cheminfo-js/nmr-mixture-generator/issues"
+  },
+  "homepage": "https://github.com/cheminfo-js/nmr-mixture-generator#readme",
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "all"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-cheminfo": "^2.0.4",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jest": "^23.3.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1"
+  },
+  "dependencies": {
+    "nmr-predictor": "^1.2.0",
+    "nmr-simulation": "^1.0.19"
+  }
+}
