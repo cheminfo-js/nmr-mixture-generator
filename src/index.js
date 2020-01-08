@@ -59,8 +59,17 @@ function loadPredictions(inputPath) {
   return result;
 }
 
-function generateMixtures(elements, concentrations, mutator, options1h, outpuPath, from, to) {
-  console.log('here ' + from + ' ' + to);
+function simulatePureMolecules(elements, options1h, outputPath) {
+  elements.forEach(element => {
+      let spinSystem = simulation.SpinSystem.fromPrediction(element.value);
+      spinSystem.ensureClusterSize(options1h);
+      let spectrum = simulation.simulate1D(spinSystem, options1h);
+      fs.writeFileSync(outputPath + element.name, JSON.stringify(spectrum));
+  });
+}
+
+function generateMixtures(elements, concentrations, mutator, options1h, outputPath, from, to) {
+  console.log('Processing: ' + from + ' - ' + to);
   for(let rowIndex = from; rowIndex < to; rowIndex++) {
     let row = concentrations[rowIndex];
     console.log(rowIndex);
@@ -91,7 +100,7 @@ function generateMixtures(elements, concentrations, mutator, options1h, outpuPat
       }
       return sum;
     }, []);
-    fs.writeFileSync(outpuPath + rowIndex + ".json" , JSON.stringify(mixture));
+    fs.writeFileSync(outputPath + rowIndex + ".json" , JSON.stringify(mixture));
   };
 }
 
@@ -99,19 +108,24 @@ function generateMixtures(elements, concentrations, mutator, options1h, outpuPat
 //makeSpinusPredictions('data/molecules/', 'data/predictions/');
 
 //STEP 2
-let elements = loadPredictions('data/predictions/');
+/*let elements = loadPredictions('data/predictions/');
 let elements2 = generateDistributions(elements, { mean: 1, dev: 0.5, name: 'normal' });
 let concentrations = generateConcentrations(elements2, 30000);
 
 fs.writeFileSync('data/output/elements.json', JSON.stringify(elements2));
 fs.writeFileSync('data/output/concentrations.json', JSON.stringify(concentrations));
+*/
 
 //STEP 3
+/*let elements2 = JSON.parse(fs.readFileSync('data/output/elements.json'));
+simulatePureMolecules(elements2, defaultOptions, 'data/spectra/')
+*/
+
+//STEP 4
 let argv = process.argv.slice(2)
 let from = argv[0];
 let to = argv[1];
-let spectra = generateMixtures(elements2, concentrations, x => x, defaultOptions, 'data/output/mixtures/', from * 1, to * 1 );
-//fs.writeFileSync('data/output/spectra'+ from + '_' +to +'.json', JSON.stringify(spectra));
+generateMixtures(elements2, concentrations, x => x, defaultOptions, 'data/output/mixtures/', from * 1, to * 1 );
 
 
 
