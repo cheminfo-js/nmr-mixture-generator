@@ -59,8 +59,10 @@ function loadPredictions(inputPath) {
   return result;
 }
 
-function generateMixtures(elements, concentrations, mutator, options1h, outpuPath) {
-  concentrations.forEach((row, rowIndex) => {
+function generateMixtures(elements, concentrations, mutator, options1h, outpuPath, from, to) {
+  console.log('here ' + from + ' ' + to);
+  for(let rowIndex = from; rowIndex < to; rowIndex++) {
+    let row = concentrations[rowIndex];
     console.log(rowIndex);
     let mixture = row.map((weight, index) => {
       if (weight > 0) {
@@ -90,7 +92,7 @@ function generateMixtures(elements, concentrations, mutator, options1h, outpuPat
       return sum;
     }, []);
     fs.writeFileSync(outpuPath + rowIndex + ".json" , JSON.stringify(mixture));
-  });
+  };
 }
 
 //STEP 1
@@ -105,8 +107,11 @@ fs.writeFileSync('data/output/elements.json', JSON.stringify(elements2));
 fs.writeFileSync('data/output/concentrations.json', JSON.stringify(concentrations));
 
 //STEP 3
-let spectra = generateMixtures(elements2, concentrations, x => x, defaultOptions, 'data/output/mixtures/' );
-fs.writeFileSync('data/output/spectra.json', JSON.stringify(spectra));
+let argv = process.argv.slice(2)
+let from = argv[0];
+let to = argv[1];
+let spectra = generateMixtures(elements2, concentrations, x => x, defaultOptions, 'data/output/mixtures/', from * 1, to * 1 );
+//fs.writeFileSync('data/output/spectra'+ from + '_' +to +'.json', JSON.stringify(spectra));
 
 
 
